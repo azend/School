@@ -1,0 +1,1 @@
+Just a repository for school work. Thought it might be interesting for some people.
