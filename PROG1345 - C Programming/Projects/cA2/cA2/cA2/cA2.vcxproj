@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{3F166E3E-162E-4D5F-B4B2-DF8D76F4E567}</ProjectGuid>
+    <ProjectGuid>{2B0562A6-9CCF-488E-BEA2-995FE2AFAD2D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>cA1b</RootNamespace>
+    <RootNamespace>cA2</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -74,8 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cA1b.c" />
-    <ClCompile Include="lib.c" />
+    <ClCompile Include="cA2.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
