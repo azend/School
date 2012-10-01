@@ -12,24 +12,24 @@
 #define DEBUG 0
 
 // Preferrably not handled by the precompiler but I also didn't want to hard code it.
+// Also I could have passed it to each function but that is a pain in the butt
 #define NUM_BRIEFCASES 26
 
-const int kNumBriefcases = 26;
 const int kBankerRounds = 6;
 
 /*
  * Convieniently, I haven't had to explicitly make prototypes for this game. If I were 
  * to however, they would go here
  */
-void populatebriefcases (struct briefcase briefcases [], int kNumBriefcases);
-void printClosedBriefcases (struct briefcase briefcases [], int kNumBriefcases);
-int getNumClosedBriefcases (struct briefcase briefcases [], int kNumBriefcases);
+void populatebriefcases (struct briefcase briefcases []);
+void printClosedBriefcases (struct briefcase briefcases []);
+int getNumClosedBriefcases (struct briefcase briefcases []);
 int checkBriefcase (struct briefcase briefcases[], int briefcase);
 float openBriefcase (struct briefcase briefcases[], int briefcase);
 int getInt (char * question);
 int getYesNo (char * question);
-int pickInitialBriefcase (struct briefcase briefcases [], int kNumBriefcases);
-int gameLoop (struct briefcase briefcases [], int kNumBriefcases);
+int pickInitialBriefcase (struct briefcase briefcases []);
+int gameLoop (struct briefcase briefcases []);
 void endGame (int result);
 void startGame (void);
 int getNum(void);
@@ -44,7 +44,7 @@ struct briefcase {
 	int opened;
 };
 
-void populatebriefcases (struct briefcase briefcases [], int kNumBriefcases) {
+void populatebriefcases (struct briefcase briefcases []) {
 	// Terrible names for generic iterators
 	int i = 0, x = 0;
 
@@ -89,7 +89,7 @@ void populatebriefcases (struct briefcase briefcases [], int kNumBriefcases) {
 
 
 	if (DEBUG) printf("briefcases:\r\n");
-	for (i = 0; i < kNumBriefcases; i++ ) {
+	for (i = 0; i < NUM_BRIEFCASES; i++ ) {
 		if (DEBUG) {
 			printf("Suitecase %d: %d\r\n", i + 1, briefcases[i].amount);
 		}
@@ -98,10 +98,10 @@ void populatebriefcases (struct briefcase briefcases [], int kNumBriefcases) {
 	return;
 }
 
-void printClosedBriefcases (struct briefcase briefcases [], int kNumBriefcases) {
+void printClosedBriefcases (struct briefcase briefcases []) {
 	int x;
 
-	for (x = 0; x < kNumBriefcases; x++) {
+	for (x = 0; x < NUM_BRIEFCASES; x++) {
 		// If the briefcase is closed, print it's number
 		if (briefcases[x].opened == 0) {
 			printf("%d ", x + 1);
@@ -109,11 +109,11 @@ void printClosedBriefcases (struct briefcase briefcases [], int kNumBriefcases) 
 	}
 }
 
-int getNumClosedBriefcases (struct briefcase briefcases [], int kNumBriefcases) {
+int getNumClosedBriefcases (struct briefcase briefcases []) {
 	int x = 0;
 	int numClosedBriefcases = 0;
 
-	for (x = 0; x < kNumBriefcases; x++) {
+	for (x = 0; x < NUM_BRIEFCASES; x++) {
 		if (!briefcases[x].opened) {
 			numClosedBriefcases++;
 		}
@@ -165,12 +165,12 @@ int getYesNo (char * question) {
 	else return 0;
 }
 
-int pickInitialBriefcase (struct briefcase briefcases [], int kNumBriefcases) {
+int pickInitialBriefcase (struct briefcase briefcases []) {
 	int selectedBriefcase = -1;
 
 	while (selectedBriefcase == -1) {
 		printf("Briefcases: ");
-		printClosedBriefcases(briefcases, NUM_BRIEFCASES);
+		printClosedBriefcases(briefcases);
 		printf("\r\n");
 
 		selectedBriefcase = getInt("Which briefcase would you like to pick?");
@@ -187,7 +187,7 @@ int pickInitialBriefcase (struct briefcase briefcases [], int kNumBriefcases) {
 	return selectedBriefcase;
 }
 
-int gameLoop (struct briefcase briefcases [], int kNumBriefcases) {
+int gameLoop (struct briefcase briefcases []) {
 	int result = 0;
 	int initialBriefcase = 0;
 	double sum = 0;
@@ -199,7 +199,7 @@ int gameLoop (struct briefcase briefcases [], int kNumBriefcases) {
 	int x = 0;
 	int y = 0;
 
-	initialBriefcase = pickInitialBriefcase(briefcases, NUM_BRIEFCASES);
+	initialBriefcase = pickInitialBriefcase(briefcases);
 
 	for (x = kBankerRounds; x > 0; x--) {
 		roundSum = 0;
@@ -208,7 +208,7 @@ int gameLoop (struct briefcase briefcases [], int kNumBriefcases) {
 			if (DEBUG) printf("The variable y is: %d\n", y);
 			// Open some briefcases
 			printf("Briefcases left: ");
-			printClosedBriefcases(briefcases, NUM_BRIEFCASES);
+			printClosedBriefcases(briefcases);
 			printf("Your case: #%d\r\n", initialBriefcase + 1);
 			printf("\r\n");
 
@@ -244,8 +244,8 @@ int gameLoop (struct briefcase briefcases [], int kNumBriefcases) {
 		}
 		else {
 			// Last minute hack to fix the original bad math
-			if (DEBUG) printf("There are %d briefcases left in play\n", getNumClosedBriefcases(briefcases, NUM_BRIEFCASES));
-			if (getNumClosedBriefcases(briefcases, NUM_BRIEFCASES) && x == 1) x++;
+			if (DEBUG) printf("There are %d briefcases left in play\n", getNumClosedBriefcases(briefcases));
+			if (getNumClosedBriefcases(briefcases) && x == 1) x++;
 		}
 
 		system("cls");
@@ -279,9 +279,9 @@ void startGame (void) {
 	int result;
 
 	struct briefcase briefcases [NUM_BRIEFCASES];
-	populatebriefcases(briefcases, NUM_BRIEFCASES);
+	populatebriefcases(briefcases);
 
-	result = gameLoop(briefcases, NUM_BRIEFCASES);
+	result = gameLoop(briefcases);
 	
 	endGame(result);
 }
