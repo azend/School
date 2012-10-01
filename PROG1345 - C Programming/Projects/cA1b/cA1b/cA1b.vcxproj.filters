@@ -18,8 +18,5 @@
     <ClCompile Include="cA1b.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lib.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

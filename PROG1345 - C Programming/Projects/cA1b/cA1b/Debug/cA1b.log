@@ -1,18 +1,20 @@
-﻿Build started 9/10/2012 9:43:41 AM.
-     1>Project "\\Fs06d\stu8\Home\Vrodriguesdiamon-cc\School\PROG1345 - C Programming\Projects\cA1b\cA1b\cA1b.vcxproj" on node 2 (build target(s)).
+﻿Build started 10/1/2012 10:16:02 AM.
+     1>Project "E:\cA1b\cA1b\cA1b.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Touching "Debug\cA1b.unsuccessfulbuild".
+         Creating "Debug\cA1b.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          All outputs are up-to-date.
        ManifestResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\cA1b.exe.embed.manifest.res" Debug\cA1b_manifest.rc 
+         All outputs are up-to-date.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"\\Fs06d\stu8\Home\Vrodriguesdiamon-cc\School\PROG1345 - C Programming\Projects\cA1b\Debug\cA1b.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\cA1b.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"\\Fs06d\stu8\Home\Vrodriguesdiamon-cc\School\PROG1345 - C Programming\Projects\cA1b\Debug\cA1b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"\\Fs06d\stu8\Home\Vrodriguesdiamon-cc\School\PROG1345 - C Programming\Projects\cA1b\Debug\cA1b.lib" /MACHINE:X86 Debug\cA1b.exe.embed.manifest.res
-         Debug\cA1b.obj
-         Debug\lib.obj
-     1>LINK : fatal error LNK1168: cannot open \\Fs06d\stu8\Home\Vrodriguesdiamon-cc\School\PROG1345 - C Programming\Projects\cA1b\Debug\cA1b.exe for writing
-     1>Done Building Project "\\Fs06d\stu8\Home\Vrodriguesdiamon-cc\School\PROG1345 - C Programming\Projects\cA1b\cA1b\cA1b.vcxproj" (build target(s)) -- FAILED.
+         All outputs are up-to-date.
+       Manifest:
+         All outputs are up-to-date.
+       FinalizeBuildStatus:
+         Deleting file "Debug\cA1b.unsuccessfulbuild".
+         Touching "Debug\cA1b.lastbuildstate".
+     1>Done Building Project "E:\cA1b\cA1b\cA1b.vcxproj" (build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:03.42
+Time Elapsed 00:00:00.37
