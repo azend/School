@@ -1,9 +1,13 @@
 
-/* Assignment #1B
- * Name: Verdi R-D
- * Date: Sept 6th, 2012
- * Comment: I don't know C. This was just me playing around
- */
+/*
+* FILE : cA1b.c
+* PROJECT : PROG1345 - Assignment #1b
+* PROGRAMMER : Verdi R-D
+* FIRST VERSION : 2012-10-1
+* DESCRIPTION :
+* The functions in this file are used together to run a console version of the hit
+* TV show Deal or no Deal.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,7 +25,7 @@ const int kBankerRounds = 6;
  * Convieniently, I haven't had to explicitly make prototypes for this game. If I were 
  * to however, they would go here
  */
-void populatebriefcases (struct briefcase briefcases []);
+void populateBriefcases (struct briefcase briefcases []);
 void printClosedBriefcases (struct briefcase briefcases []);
 int getNumClosedBriefcases (struct briefcase briefcases []);
 int checkBriefcase (struct briefcase briefcases[], int briefcase);
@@ -44,14 +48,25 @@ struct briefcase {
 	int opened;
 };
 
-void populatebriefcases (struct briefcase briefcases []) {
+//
+// FUNCTION : populateBriefcases
+// DESCRIPTION :
+// This function populates our briefcase array with
+// a random order of briefcase amounts from the show
+// PARAMETERS :
+// struct briefcase briefcases [] : An array, passing by reference, 
+// which contains every briefcase in a struct
+// RETURNS :
+// void : void
+//
+void populateBriefcases (struct briefcase briefcases []) {
 	// Terrible names for generic iterators
 	int i = 0, x = 0;
 
 	int duplicate = 0;
 	int random = 0;
 
-	float briefcaseAmounts [NUM_BRIEFCASES] = {0.01, 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000};
+	float briefcaseAmounts [NUM_BRIEFCASES] = {0.01, 1.0, 5.0, 10.0, 25.0, 50.0, 75.0, 100.0, 200.0, 300.0, 400.0, 500.0, 750.0, 1000.0, 5000.0, 10000.0, 25000.0, 50000.0, 75000.0, 100000.0, 200000.0, 300000.0, 400000.0, 500000.0, 750000.0, 1000000};
 	int briefcaseOrder [NUM_BRIEFCASES];
 
 
@@ -98,6 +113,16 @@ void populatebriefcases (struct briefcase briefcases []) {
 	return;
 }
 
+//
+// FUNCTION : printClosedBriefcases
+// DESCRIPTION :
+// This function prints the briefcases left in play (unopened)
+// PARAMETERS :
+// struct briefcase briefcases [] : An array, passing by reference, 
+// which contains every briefcase in a struct
+// RETURNS :
+// void : void
+//
 void printClosedBriefcases (struct briefcase briefcases []) {
 	int x;
 
@@ -109,6 +134,17 @@ void printClosedBriefcases (struct briefcase briefcases []) {
 	}
 }
 
+//
+// FUNCTION : getNumClosedBriefcases
+// DESCRIPTION :
+// This function gets the number of briefcases left in play and returns
+// it as an integer
+// PARAMETERS :
+// struct briefcase briefcases [] : An array, passing by reference, 
+// which contains every briefcase in a struct
+// RETURNS :
+// int : The number of briefcases left in play
+//
 int getNumClosedBriefcases (struct briefcase briefcases []) {
 	int x = 0;
 	int numClosedBriefcases = 0;
@@ -122,6 +158,18 @@ int getNumClosedBriefcases (struct briefcase briefcases []) {
 	return numClosedBriefcases;
 }
 
+//
+// FUNCTION : checkBriefcase
+// DESCRIPTION :
+// This function checks whether the briefcase in the set of briefcases
+// has been opened yet
+// PARAMETERS :
+// struct briefcase briefcases [] : An array, passing by reference, 
+// which contains every briefcase in a struct
+// int briefcase : The number (not id) of the briefcase to check
+// RETURNS :
+// int : Returns 0 if still closed and 1 if opened
+//
 int checkBriefcase (struct briefcase briefcases[], int briefcase) {
 	int result = 0;
 
@@ -132,6 +180,18 @@ int checkBriefcase (struct briefcase briefcases[], int briefcase) {
 	return result;
 }
 
+//
+// FUNCTION : openBriefcase
+// DESCRIPTION :
+// This function marks the briefcase as opened and returns the amount 
+// inside
+// PARAMETERS :
+// struct briefcase briefcases [] : An array, passing by reference, 
+// which contains every briefcase in a struct
+// int briefcase : The number (not id) of the briefcase to open
+// RETURNS :
+// float: The amount inside of the briefcase
+//
 float openBriefcase (struct briefcase briefcases[], int briefcase) {
 	briefcases[briefcase - 1].opened = 1;
 	if (DEBUG) printf("There is $%d in briefcase %d\r\n", briefcases[briefcase -1].amount, briefcase);
@@ -139,6 +199,18 @@ float openBriefcase (struct briefcase briefcases[], int briefcase) {
 	return briefcases[briefcase -1].amount;
 }
 
+//
+// FUNCTION : getInt
+// DESCRIPTION :
+// A utility function for going and getting an integer from the user.
+// Also does validation to make sure that the user is inputing what
+// you're asking.
+// PARAMETERS :
+// char * question : A string (or char array pointer) that contains the
+// question you're asking the user (what you are asking user input for)
+// RETURNS :
+// int : Returns an integer from user input
+//
 int getInt (char * question) {
 	int answer = 0;
 	do {
@@ -150,6 +222,19 @@ int getInt (char * question) {
 	return answer;
 }
 
+//
+// FUNCTION : getYesNo
+// DESCRIPTION :
+// A utility function for going and getting a yes/no style answer from 
+// the user. Also does validation to make sure that the user is inputing 
+// what you're asking.
+// PARAMETERS :
+// char * question : A string (or char array pointer) that contains the
+// question you're asking the user (what you are asking user input for)
+// RETURNS :
+// int : Returns a boolean style integer depending on what the user answered.
+// 1 is yes and 0 is no.
+//
 int getYesNo (char * question) {
 	char answer;
 	do {
@@ -165,6 +250,17 @@ int getYesNo (char * question) {
 	else return 0;
 }
 
+//
+// FUNCTION : pickInitialBriefcase
+// DESCRIPTION :
+// This function picks the initial briefcase and holds it until the 
+// end of the game
+// PARAMETERS :
+// struct briefcase briefcases [] : An array, passing by reference, 
+// which contains every briefcase in a struct
+// RETURNS :
+// int : The picked briefcase id
+//
 int pickInitialBriefcase (struct briefcase briefcases []) {
 	int selectedBriefcase = -1;
 
@@ -187,6 +283,18 @@ int pickInitialBriefcase (struct briefcase briefcases []) {
 	return selectedBriefcase;
 }
 
+//
+// FUNCTION : gameLoop
+// DESCRIPTION :
+// This function runs the game's main loops such as picking briefcases and getting
+// Banker offers
+// PARAMETERS :
+// struct briefcase briefcases [] : An array, passing by reference, 
+// which contains every briefcase in a struct
+// RETURNS :
+// int : The condition the game is left in. 1 if the player accepted the banker's
+// offer. 0 for all other cases.
+//
 int gameLoop (struct briefcase briefcases []) {
 	int result = 0;
 	int initialBriefcase = 0;
@@ -264,28 +372,57 @@ int gameLoop (struct briefcase briefcases []) {
 	return result;
 }
 
+
+//
+// FUNCTION : endGame
+// DESCRIPTION :
+// This function runs things that should be run when the game ends (ties up loose ends)
+// PARAMETERS :
+// int result : The game's end status
+// RETURNS :
+// void : void
+//
 void endGame (int result) {
 	switch (result) {
 	case 1:
 		printf("You've accepted the bankers offer.");
 		break;
 	default:
-		printf("You lose");
+		break;
 	}
 	
 }
 
+//
+// FUNCTION : startGame
+// DESCRIPTION :
+// This function declares and initializes some values and then starts the game loop
+// PARAMETERS :
+// void : void
+// RETURNS :
+// void : void
+//
 void startGame (void) {
 	int result;
 
 	struct briefcase briefcases [NUM_BRIEFCASES];
-	populatebriefcases(briefcases);
+	populateBriefcases(briefcases);
 
 	result = gameLoop(briefcases);
 	
 	endGame(result);
 }
 
+
+//
+// FUNCTION : getNum
+// DESCRIPTION :
+// This function goes and gets a number from the user
+// PARAMETERS :
+// void : void
+// RETURNS :
+// int : The number entered by the user
+//
 
 /*
  * Boilerplate get an integer from prompt code.
@@ -314,7 +451,15 @@ int getNum(void)
 	return  number;
 }
 
-// Straight from the page
+//
+// FUNCTION : getChar
+// DESCRIPTION :
+// This function goes and gets a char from the user
+// PARAMETERS :
+// void : void
+// RETURNS :
+// char : The char entered by the user
+//
 char getChar(void)
 {
 
@@ -337,6 +482,7 @@ char getChar(void)
 
 	return  character;
 }
+
 
 int main (void) {
 	startGame();

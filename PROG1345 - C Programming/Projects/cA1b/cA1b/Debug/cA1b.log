@@ -1,4 +1,4 @@
-﻿Build started 10/1/2012 10:37:22 AM.
+﻿Build started 10/1/2012 11:40:04 AM.
      1>Project "E:\cA1b\cA1b\cA1b.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\cA1b.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -28,4 +28,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.73
+Time Elapsed 00:00:03.41
