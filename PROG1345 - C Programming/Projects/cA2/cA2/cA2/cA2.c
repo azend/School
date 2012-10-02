@@ -85,6 +85,7 @@ int feelThePower(int base, int exponent) {
 }
 
 
+
 /*
  * FUNCTION      : getNum
  * DESCRIPTION   :
@@ -115,42 +116,77 @@ int getNum(void) {
 
 int main (void) {
 	// Assign default values to variables base and exponent
+	// (I picked 5 and 2 as defaults because I felt like it)
 	int base = 5, exponent = 2;
 
+	// Create an exit condition for when the user tries to exit
+	int exiting = 0;
+	
 	// Create an input buffer for deciding whether or not to 
 	// use inputted values
 	int input = 0;
 
-	while(1) {
-		// Get the base from the user
-		printf("Please enter a base: ");
+	while (!exiting) {
+		printf("Power Menu:\n");
+		printf("\t1. Change base\n");
+		printf("\t2. Change exponent\n");
+		printf("\t3. Display base raised to exponent\n");
+		printf("\t4. Exit Program\n");
+		printf("\n");
+		printf("Option? ");
+
 		input = getNum();
 
-		// Check if it is between our preset range
-		if (checkRange(input, 1, 25)) {
-			// If it is, make it our base
-			base = input;
+		if (checkRange(input, 1, 4)) {
+			switch (input) {
+			case 1:
+				// Get the base from the user
+				printf("Please enter a base: ");
+				input = getNum();
+
+				// Check if it is between our preset range
+				if (checkRange(input, 1, 25)) {
+					// If it is, make it our base
+					base = input;
+				}
+				else {
+					// If it isn't, ignore it and use default values
+					printf("The value %d is out of range. Defaulting to %d\r\n", input, base);
+				}
+				break;
+
+			case 2:
+				// Get the base from the user
+				printf("Please enter an exponent: ");
+				input = getNum();
+
+				// Check if it is between our preset range
+				if (checkRange(input, 1, 5)) {
+					// If it is, make it our base
+					exponent = input;
+				}
+				else {
+					// If it isn't, ignore it and use default values
+					printf("The value %d is out of range. Defaulting to %d\r\n", input, exponent);
+				}
+				break;
+
+			case 3:
+				// Print the calculated power
+				printf("%d to the power of %d is %d\r\n\r\n", base, exponent, feelThePower(base, exponent));
+				break;
+
+			case 4:
+				printf("Exiting...");
+				exiting = 1;
+				break;
+			}
 		}
 		else {
-			// If it isn't, ignore it and use default values
-			printf("The value %d is out of range. Defaulting to %d\r\n", input, base);
+			printf("Invalid input.\n");
 		}
 
-		// Get the base from the user
-		printf("Please enter an exponent: ");
-		input = getNum();
-
-		// Check if it is between our preset range
-		if (checkRange(input, 1, 5)) {
-			// If it is, make it our base
-			exponent = input;
-		}
-		else {
-			// If it isn't, ignore it and use default values
-			printf("The value %d is out of range. Defaulting to %d\r\n", input, exponent);
-		}
-
-		// Print the calculated power
-		printf("%d to the power of %d is %d\r\n\r\n", base, exponent, feelThePower(base, exponent));
+		
+		printf("\n");	
 	}
 }
