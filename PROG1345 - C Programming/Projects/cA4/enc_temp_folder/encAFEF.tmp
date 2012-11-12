@@ -14,15 +14,6 @@
 #define CITY_OFFSET		1
 //#define TRIP_OFFSET		0.5
 
-int checkRange (int input, int rangeMin, int rangeMax);
-int getNumNicely( char* question );
-int getNum(void);
-int getRoute (char *cityNames[], int flyingTimes[], int layoverTimes[], int home, int dest);
-void printAirports(char *cityNames[]);
-void menu (char **cityNames, int *flyingTimes, int *layoverTimes);
-
-
-
 /*
 * FUNCTION : checkRange
 * DESCRIPTION :
@@ -109,7 +100,6 @@ int getNum(void) {
 * as an integer.
 */
 int getRoute (char *cityNames[], int flyingTimes[], int layoverTimes[], int home, int dest) {
-	int result = 0;
 	int airplane = home; // Creative name for iterator
 
 	int travelTime = 0; // In minutes
@@ -142,8 +132,6 @@ int getRoute (char *cityNames[], int flyingTimes[], int layoverTimes[], int home
 		
 		printf("Your trip will take %02d:%02d\n", travelTime / 60, travelTime % 60);
 		*/
-
-		result = 2;
 	}
 	else if (home < dest) {
 		printf("Departing from (#%d) %s for arrival at (#%d) %s\n\n", 
@@ -175,10 +163,9 @@ int getRoute (char *cityNames[], int flyingTimes[], int layoverTimes[], int home
 	else {
 		// Alert the user if their starting and ending cities are the same
 		printf("Turn around! You're already there!\n");
-		result = 1;
 	}
 	
-	return result;
+
 }
 
 
@@ -199,7 +186,7 @@ void printAirports(char *cityNames[]) {
 
 	printf("Airports: ");
 
-	// Loop through all of the cities and print out their names
+
 	for (i = 0; i < NUM_CITIES; i++) {
 		printf("(#%d) %s ", i + CITY_OFFSET, cityNames[i]);
 	}
@@ -210,14 +197,13 @@ void printAirports(char *cityNames[]) {
 
 
 void menu (char **cityNames, int *flyingTimes, int *layoverTimes) {
-	int exit = FALSE; // Exit sentinal
-	int input = 1; // Input buffer
+	int exit = FALSE;
+	int input = 1;
 
 	int home = 1;
 	int destination = 1;
 
 	while(!exit) {
-		// Let the user know what airports are available
 		printAirports(cityNames);
 
 		input = getNumNicely("Please enter the number of your starting city airport");
@@ -227,7 +213,6 @@ void menu (char **cityNames, int *flyingTimes, int *layoverTimes) {
 			home = input;
 		}
 		else if (input == 0) {
-			// Exit sentinal has been reached
 			printf("You entered 0. Now exiting\n");
 			exit = TRUE;
 			continue;
@@ -252,7 +237,6 @@ void menu (char **cityNames, int *flyingTimes, int *layoverTimes) {
 
 		printf("\n");
 
-		// Print off the route information from the home airport to the destination airport
 		getRoute(cityNames, flyingTimes, layoverTimes, home - CITY_OFFSET, destination - CITY_OFFSET);
 
 		printf("\n\n");
@@ -296,7 +280,7 @@ void populateCities (char *cityNames[], int flyingTimes[], int layoverTimes[]) {
 
 }
 
-int main (void) {
+int main (int argc, int *argv[]) {
 	char **cityNames = NULL;
 	int *flyingTimes = NULL;
 	int *layoverTimes = NULL;
