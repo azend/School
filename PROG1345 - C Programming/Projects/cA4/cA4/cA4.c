@@ -13,8 +13,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define DEBUG			0
-
 #define FALSE			0
 #define TRUE			1
 
@@ -54,14 +52,12 @@ int checkRange (int input, int rangeMin, int rangeMax) {
 
 	// Check whether the input is within the predefined range
 	if ( input >= rangeMin && input <= rangeMax ) {
-		if (DEBUG) printf("%d is inside the range of %d to %d\r\n", input, rangeMin, rangeMax);
 
 		// Return result as 1 since it is within its range
 		result = 1;
 	}
 	else {
 		// Return result as 0 since it is not within its range
-		if (DEBUG) printf("%d is not inside the range of %d to %d\r\n", input, rangeMin, rangeMax);
 		// Since result has been already assigned 0, there is nothing to do here
 	}
 
@@ -305,8 +301,6 @@ void menu (char *cityNames[], int flyingTimes[], int layoverTimes[]) {
 			printf("Invalid input. Please try again.\n");
 			continue;
 		}
-
-		if (DEBUG) printf("The home city is %d and the destination city is %d\n", home, destination);
 
 		printf("\n");
 
