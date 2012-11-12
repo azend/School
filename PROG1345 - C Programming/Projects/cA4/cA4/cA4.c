@@ -1,4 +1,14 @@
-
+/* 
+*  FILE          : cA4.c
+*  PROJECT       : PROG1345 - Assignment #4
+*  PROGRAMMER    : Verdi Rodrigues-Diamond
+*  FIRST VERSION : 2012-11-12
+*  DESCRIPTION   :
+*    The functions in this file are used to
+*	 calculate the route timesavailable on 
+*	 a crazy airline fueled only by Carlo's
+*	 imagination (and jet fuel).
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +22,6 @@
 
 #define NUM_CITIES		6
 #define CITY_OFFSET		1
-//#define TRIP_OFFSET		0.5
 
 int checkRange (int input, int rangeMin, int rangeMax);
 int getNumNicely( char* question );
@@ -20,6 +29,7 @@ int getNum(void);
 int getRoute (char *cityNames[], int flyingTimes[], int layoverTimes[], int home, int dest);
 void printAirports(char *cityNames[]);
 void menu (char **cityNames, int *flyingTimes, int *layoverTimes);
+void populateCities (char *cityNames[], int flyingTimes[], int layoverTimes[]);
 
 
 
@@ -60,6 +70,17 @@ int checkRange (int input, int rangeMin, int rangeMax) {
 
 
 
+/*
+* FUNCTION : getNumNicely
+* DESCRIPTION :
+* This function gets a number from the
+* user using getNum() but more nicely.
+* PARAMETERS :
+* char* question : Question or phrase to print
+*				   before reading input
+* RETURNS :
+* int : returns the result of the getNum() call
+*/
 int getNumNicely( char* question ) {
 	printf("%s\n", question);
 	return getNum();
@@ -100,13 +121,29 @@ int getNum(void) {
 /*
 * FUNCTION : getRoute
 * DESCRIPTION :
-* This function gets a number from the user
-* using stdin
+* This function finds a route through this
+* crazy airplane company
 * PARAMETERS :
-* void :
+* char *cityNames[] : String array of the
+*					  names of all of the
+*					  populated airports
+* int flyingTimes[] : Array of all of the
+*					  lengths of flights
+*					  in minutes between
+*					  airports
+* int layoverTimes[] : Array of all the lengths
+*					   of layovers between
+*					   connecting flights
+* int home : ID of the starting airport
+*			 (-1 of what Carlo's IDs are 
+*			 to not waste the first slot)
+* int dest : ID of the ending airport
+*			 (-1 of what Carlo's IDs are 
+*			 to not waste the first slot)
 * RETURNS :
-* int : The number the user entered formatted
-* as an integer.
+* int : 0 if a route was found
+*		1 if the start and end are the same
+*		2 if the user tries to go backwards
 */
 int getRoute (char *cityNames[], int flyingTimes[], int layoverTimes[], int home, int dest) {
 	int result = 0;
@@ -189,8 +226,9 @@ int getRoute (char *cityNames[], int flyingTimes[], int layoverTimes[], int home
 * Prints all of the populated airports along
 * with the airport ids
 * PARAMETERS :
-* char* : An array to the names of all the
-*			populated airports
+* char *cityNames[] : String array of the
+*					  names of all of the
+*					  populated airports
 * RETURNS :
 * void :
 */
@@ -209,7 +247,27 @@ void printAirports(char *cityNames[]) {
 
 
 
-void menu (char **cityNames, int *flyingTimes, int *layoverTimes) {
+/*
+* FUNCTION : menu
+* DESCRIPTION :
+* Provides a menu to the user to select
+* starting and ending airports from 
+* stdio.
+* PARAMETERS :
+* char *cityNames[] : String array of the
+*					  names of all of the
+*					  populated airports
+* int flyingTimes[] : Array of all of the
+*					  lengths of flights
+*					  in minutes between
+*					  airports
+* int layoverTimes[] : Array of all the lengths
+*					   of layovers between
+*					   connecting flights
+* RETURNS :
+* void : 
+*/
+void menu (char *cityNames[], int flyingTimes[], int layoverTimes[]) {
 	int exit = FALSE; // Exit sentinal
 	int input = 1; // Input buffer
 
@@ -259,50 +317,12 @@ void menu (char **cityNames, int *flyingTimes, int *layoverTimes) {
 	}
 }
 
-void populateCities (char *cityNames[], int flyingTimes[], int layoverTimes[]) {
 
-	char *cityNamesBuffer [NUM_CITIES] = {
-		"Toronto",
-		"Atlanta",
-		"Austin",
-		"Denver",
-		"Chicago",
-		"Buffalo"
-	};
-
-	int flyingTimesBuffer [NUM_CITIES - 1] = {
-		(4 * 60) + 15,
-		(3 * 60) + 58,
-		(3 * 60) + 55,
-		(2 * 60) + 14,
-		(3 * 60) + 27
-	};
-
-	int layoverTimesBuffer[NUM_CITIES - 1] = {
-		(1 * 60) + 20,
-		(0 * 60) + 46,
-		(11 * 60) + 29,
-		(0 * 60) + 53,
-		0
-	};
-
-	/*if ( !( cityNames = (char**) malloc( sizeof cityNamesBuffer ) ) ) exit(1);
-	if ( !( flyingTimes = (int*) malloc( sizeof flyingTimesBuffer ) ) ) exit(1);
-	if ( !( layoverTimes = (int*) malloc( sizeof layoverTimesBuffer ) ) ) exit(1);*/
-
-	cityNames = cityNamesBuffer; // Resolves to the address of the first element
-	flyingTimes = flyingTimesBuffer;
-	layoverTimes = layoverTimesBuffer;
-
-}
 
 int main (void) {
-	char **cityNames = NULL;
-	int *flyingTimes = NULL;
-	int *layoverTimes = NULL;
 
 	// Populate the darn buffers
-	char *cityNamesBuffer [NUM_CITIES] = {
+	char *cityNames [NUM_CITIES] = {
 		"Toronto",
 		"Atlanta",
 		"Austin",
@@ -311,7 +331,7 @@ int main (void) {
 		"Buffalo"
 	};
 
-	int flyingTimesBuffer [NUM_CITIES - 1] = {
+	int flyingTimes [NUM_CITIES - 1] = {
 		(4 * 60) + 15,
 		(3 * 60) + 58,
 		(3 * 60) + 55,
@@ -319,24 +339,20 @@ int main (void) {
 		(3 * 60) + 27
 	};
 
-	int layoverTimesBuffer[NUM_CITIES - 1] = {
+	int layoverTimes [NUM_CITIES - 1] = {
 		(1 * 60) + 20,
 		(0 * 60) + 46,
 		(11 * 60) + 29,
 		(0 * 60) + 53,
 		0
 	};
-
-	cityNames = cityNamesBuffer; // Resolves to the address of the first element
-	flyingTimes = flyingTimesBuffer;
-	layoverTimes = layoverTimesBuffer;
 
 	//populateCities(cityNames, flyingTimes, layoverTimes);
 
 
 	menu(cityNames, flyingTimes, layoverTimes);
 
-	
+	// Don't forget to free your memory :)
 	free(cityNames);
 	free(flyingTimes);
 	free(layoverTimes);
