@@ -10,6 +10,10 @@
 *	 imagination (and jet fuel).
 */
 
+// Ignore the error about using sscanf_s over
+// sscanf
+#pragma warning(disable: 4996)
+
 #include <stdio.h>
 #include <stdlib.h>
 
