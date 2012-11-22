@@ -1,40 +1,76 @@
+#include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 #define TRUE	1
 #define FALSE	0
 
 #define	DEBUG	1
 
+#define LINE_MAX_LENGTH	100
+
 void processArguments (int argc, char *argv[], char* files[], char* wrapAtLastSpace, int* columnWidth) ;
-int readFile (char* fileName, char* file);
-int getFileLength(char* fileName, int* fileLength);
+int readFile (char* fileName, char** file);
+int getFileLength(char* fileName);
 
 
 
-int getFileLength(char* fileName, int* fileLength) {
+int getFileLength(char* fileName) {
 	// Put icky os dependant stuff here
+	int result = 0;
+	FILE * fp = NULL;
+	
+	fp = fopen(fileName, "rb");
+	
+
+	if ( fp != NULL ) {
+		fseek(fp, 0L, SEEK_END);
+		result = ftell(fp) + 1;
+		fclose(fp);
+	}
+	else {
+		result = -1;
+	}
+	
+	return result;
 }
 
-int readFile (char* fileName, char* file) {
+int readFile (char* fileName, char** file) {
 	int result = 0;
 	int fileLength = 0;
 
-	FILE * fp = 0;
+	FILE * fp = NULL;
 
-	if ( getFileLength(fileName, &fileLength) ) {
-		char buffer[fileLength + 1];
+	char lineBuffer[LINE_MAX_LENGTH] = "";
 
-		fp = fopen(fileName, 'r');
+	if ( (fileLength = getFileLength(fileName)) != -1 ) {
+		
+		*file = (char*) calloc(fileLength + 1, sizeof (char));
 
-		if (fp != NULL) {
+		if ( *file != NULL ) {
+		
+			fp = fopen(fileName, "r");
 
-			fclose(fp);
+			if (fp != NULL) {
+	
+				while( fgets(lineBuffer, LINE_MAX_LENGTH, fp) != NULL ) {
+					strcat(*file, lineBuffer);
+				}	
+					
+				fclose(fp);
+			}
+
+			else {
+				printf("ERROR: Unable to open file\n");
+				result = 3;
+			}
+
+
 		}
-
 		else {
-			printf("ERROR: Unable to open file\n");
+			printf("ERROR: Could not allocate memory for reading the file\n");
 			result = 2;
 		}
 
@@ -96,9 +132,12 @@ int main (int argc, char *argv[]) {
 	int columnWidth = 40;
 
 	//processArguments(argc, argv, &wrapAtLastSpace, &columnWidth);
+	char* file;
 
-	readFile("text.txt");
+	readFile("text.txt", &file);
 
+	printf("%s", file);
 
 	return 0;
 }
+
