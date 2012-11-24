@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "unit.h"
 
 #define TRUE	1
 #define FALSE	0
@@ -11,7 +12,7 @@
 
 #define LINE_MAX_LENGTH	100
 
-void processArguments (int argc, char *argv[], char* files[], char* wrapAtLastSpace, int* columnWidth) ;
+void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpace, int* columnWidth) ;
 int readFile (char* fileName, char** file);
 int getFileLength(char* fileName);
 
@@ -83,7 +84,23 @@ int readFile (char* fileName, char** file) {
 	return result;
 }
 
-void processArguments (int argc, char *argv[], char* files[], char* wrapAtLastSpace, int* columnWidth) {
+int countArguments(int argc, char* argv[]) {
+	int numArguments = 0;
+	int i = 0;
+
+	for (i = 0; i < argc; i++) {
+		if ( argv[i][0] == '-' ) {
+			// This is a command line switch
+		}
+		else {
+			numArguments++;
+		}
+	}
+
+	return numArguments;
+}
+
+void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpace, int* columnWidth) {
 	int i = 0;
 
 	int numFiles = 0;
@@ -100,17 +117,20 @@ void processArguments (int argc, char *argv[], char* files[], char* wrapAtLastSp
 				if ( argv[i][1] == 's' /* and check length */ ) {
 					// Do something
 					*wrapAtLastSpace = TRUE;
+					printf("Using flag -s\n");
 
 				}
 				else if ( argv[i][1] == 'w' /* and check length */ ) {
 					// Do something with columnWidth
-
+					printf("Using flag -w\n");
 
 				}
 
 			}
 
 			else {
+				if ( ( files = (char*) malloc(
+					
 				numFiles++;
 				// For later use with malloc()
 
@@ -122,21 +142,28 @@ void processArguments (int argc, char *argv[], char* files[], char* wrapAtLastSp
 	} 
 }
 
+int test () {
+	int testsFailed = 0;
+
+	return testsFailed;
+}
+
 
 int main (int argc, char *argv[]) {
 	// …
 	// Code goes here.
 	// ...
-	//char* files[];
-	char wrapAtLastSpace = FALSE;
+	char** files;
+	int wrapAtLastSpace = FALSE;
 	int columnWidth = 40;
 
-	//processArguments(argc, argv, &wrapAtLastSpace, &columnWidth);
-	char* file;
+	processArguments(argc, argv, files, &wrapAtLastSpace, &columnWidth);
 
-	readFile("text.txt", &file);
+	//char* file;
 
-	printf("%s", file);
+	//readFile("text.txt", &file);
+
+	//printf("%s", file);
 
 	return 0;
 }

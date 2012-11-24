@@ -1,4 +1,4 @@
 #!/bin/sh
 
 clear
-gcc -Wall *.c -o wrapfile
+gcc -Wall src/*.c -o bin/wrapfile
