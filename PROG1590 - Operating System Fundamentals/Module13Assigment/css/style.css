@@ -1,0 +1,90 @@
+
+body {
+	/*background-color: yellow;*/
+	background-image: url("http://i91.photobucket.com/albums/k314/SakiChan1/gifs%20i%20didnt%20make/539919226m4ip.gif");
+	background-repeat: repeat;
+}
+
+.wrapper {
+	background-color:yellow;
+}
+
+header, footer {
+	display: block;
+	background-color: black;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+img {
+	/*margin: 10px 10px 20px 10px;*/
+}
+
+header *, footer * {
+	background-color: black;
+	color: yellow;
+}
+
+header {
+	padding: 10px 20px;
+}
+
+footer {
+	text-align: center;
+}
+
+.wrapper {
+	width: 960px;
+	margin:auto;
+}
+
+.content {
+	padding: 20px 20px;
+}
+
+.navigation {
+	list-style: none;
+	padding: 0;
+}
+
+.navigation > li {
+	display: inline;
+}
+
+.navigation a {
+	margin: 2px 5px;
+}
+
+.galleryitem {
+	width: 400px;
+	border: 3px solid black;
+	display:inline-block;
+	vertical-align: middle;
+	padding: 5px;
+	margin: 20px;
+
+	background-color:white;
+}
+
+.galleryitem img, .galleryitem p {
+	display: block;
+}
+
+.galleryitem img {
+	width: inherit;
+}
+
+.galleryitem p {
+	text-align: center;
+}
+
+.floatleft {
+	float: left;
+}
+
+.floatright {
+	float: right;
+}

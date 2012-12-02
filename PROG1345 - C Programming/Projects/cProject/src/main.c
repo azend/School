@@ -11,9 +11,11 @@
 #define	DEBUG	1
 
 #define LINE_MAX_LENGTH	100
+#define COLUMN_DEFAULT_WIDTH	80
 
 void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpace, int* columnWidth) ;
 int readFile (char* fileName, char** file);
+char* wrapString (char* input, int wrapAtLastSpace, int columnWidth);
 int getFileLength(char* fileName);
 
 
@@ -84,6 +86,60 @@ int readFile (char* fileName, char** file) {
 	return result;
 }
 
+char* wrapString (char* input, int wrapAtLastSpace, int columnWidth) {
+	int inputIndex = 0;
+	char* output;
+	int outputIndex = 0;
+
+	if (! (output = (char*) malloc( (inputIndex + 1) * sizeof(char) ))) {
+		printf("ERROR: Unable to allocate enough memory to wrap string.");
+		output = "";
+	}
+
+	for ( inputIndex = 0; inputIndex < strlen(input); inputIndex++ ) {
+		// Make room in the string
+		if (! (output = (char*) realloc( output, (inputIndex + 1) * sizeof(char) ))) {
+			printf("ERROR: Unable to allocate enough memory to wrap string.");
+			output = "";
+			break;
+		}
+		
+		if (inputIndex % columnWidth == 0) {
+
+			// Wrap line
+			printf("%c\n", input[inputIndex]);
+			output[outputIndex++] = input[inputIndex];
+			output[outputIndex++] = '\n';
+
+			if (wrapAtLastSpace) {
+
+			}
+			else {
+				printf("%c\n", input[inputIndex]);
+				output[outputIndex++] = input[inputIndex];
+				output[outputIndex++] = '\n';
+			}
+
+			if ( strlen(input) > inputIndex) {
+
+				// If the first character after a new line is a space,
+				// jump it.
+				if ( input[inputIndex + 1] == ' ' ) {
+					inputIndex++;
+				}
+			}
+		}
+		else {
+			printf("%c", input[inputIndex]);
+			output[outputIndex] = input[inputIndex];
+		}
+
+		outputIndex++;
+	}
+
+	return output;
+}
+
 int countArguments(int argc, char* argv[]) {
 	int numArguments = 0;
 	int i = 0;
@@ -101,11 +157,10 @@ int countArguments(int argc, char* argv[]) {
 }
 
 void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpace, int* columnWidth) {
-	int i = 0;
-
-	int numFiles = 0;
+	int i = 1;
 	
-	for (i = 0; i < argc; i++) {
+
+	for (i = 1; i < argc; i++) { // Start after the initial command
 
 		if ( strlen( argv[i] )  > 1 ) {
 
@@ -124,21 +179,50 @@ void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpac
 					// Do something with columnWidth
 					printf("Using flag -w\n");
 
+					if ( strlen (argv[i]) > 2 ) {
+						// The user must have included the length in the param
+
+						// cheater way
+						// I could also make a substring
+						argv[i][0] = 0;
+						argv[i][1] = 0;
+
+						*columnWidth = atoi(argv[i]);
+						if ( *columnWidth == 0 ) {
+							*columnWidth = COLUMN_DEFAULT_WIDTH;
+						}
+					}
+					else {
+						if ( argc > (i + 1) ) {
+							*columnWidth = atoi(argv[i + 1]);
+							if ( *columnWidth == 0 ) {
+								*columnWidth = COLUMN_DEFAULT_WIDTH;
+							}
+						}
+						else {
+							// Display error that the command did not specify a length
+						}
+					}
+
 				}
 
 			}
 
 			else {
-				if ( ( files = (char*) malloc(
-					
-				numFiles++;
+
 				// For later use with malloc()
+				//printf("%s\n", argv[i]);
+
+				char* file;
+
+				readFile(argv[i], &file);
+
+				printf("%s", wrapString(file, *wrapAtLastSpace, *columnWidth));
 
 			}
 
 		}
 
-		printf("%d - %s\n", argv[i][0], argv[i]);
 	} 
 }
 
@@ -153,17 +237,20 @@ int main (int argc, char *argv[]) {
 	// …
 	// Code goes here.
 	// ...
+
+
+
 	char** files;
 	int wrapAtLastSpace = FALSE;
-	int columnWidth = 40;
+	int columnWidth = COLUMN_DEFAULT_WIDTH;
 
 	processArguments(argc, argv, files, &wrapAtLastSpace, &columnWidth);
 
-	//char* file;
+	/*char* file;
 
-	//readFile("text.txt", &file);
+	readFile("text.txt", &file);
 
-	//printf("%s", file);
+	printf("%s", file);*/
 
 	return 0;
 }
