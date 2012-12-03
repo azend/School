@@ -15,18 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cA5.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fileUtilities.c">
+    <ClCompile Include="mini3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cA5_proto.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fileUtilities_proto.h">
+    <ClInclude Include="mini3_proto.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

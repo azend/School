@@ -15,19 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cA5.c">
+    <ClCompile Include="read.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fileUtilities.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="cA5_proto.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fileUtilities_proto.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

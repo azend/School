@@ -19,14 +19,17 @@ echo 3) Open in TextPad
 echo 4) Print
 echo
 
-set /p choice="Enter your choice: "
+REM set /p choice="Enter your choice: "
+
+echo Enter your choice
+read.exe
 goto processMenu
 
 :processMenu
-if "%choice%"=="1" goto openInNotepad
-if "%choice%"=="2" goto openInWord
-if "%choice%"=="3" goto openInTextpad
-if "%choice%"=="4" goto print
+if "%errorlevel%"=="1" goto openInNotepad
+if "%errorlevel%"=="2" goto openInWord
+if "%errorlevel%"=="3" goto openInTextpad
+if "%errorlevel%"=="4" goto print
 goto exit
 
 :openInNotepad
@@ -34,14 +37,19 @@ notepad "%1"
 goto exit
 
 :openInWord
-winword "%1"
+if exist "%ProgramFiles(x86)%" (
+	start /B "%ProgramFiles(x86)%\Microsoft Office\OFFICE14\winword.exe" "%1"
+) else (
+	start /B "%ProgramFiles%\Microsoft Office\OFFICE14\winword.exe" "%1"
+)
+ "%1"
 goto exit
 
 :openInTextpad
 if exist "%ProgramFiles(x86)%" (
-	"%ProgramFiles(x86)%\TextPad 6\TextPad.exe" "%1"
+	start /B "%ProgramFiles(x86)%\TextPad 6\TextPad.exe" "%1"
 ) else (
-	"%ProgramFiles%\TextPad 6\TextPad.exe" "%1"
+	start /B "%ProgramFiles%\TextPad 6\TextPad.exe" "%1"
 )
 goto exit
 

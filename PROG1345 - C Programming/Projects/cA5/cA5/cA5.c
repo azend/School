@@ -1,54 +1,196 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "fileUtilities_proto.h"
+#include "cA5_proto.h"
 
 #define BUF_SIZE	1024
+#define HALF_BYTE	128
 
-#define OUTPUT_FILE	output.txt
+#define OUTPUT_FILE	"contents.txt"
 
-int main (int argc, char *argv[]) {
+int copyBinaryFileToAsciiFile(char* inputFqpn, char* outputFqpn) {
+	int result = 0;
+
+	int inputFileSize = 0;
+
 	FILE *inputFile;
 	FILE *outputFile;
 
-	char inputBuf;
+	unsigned char * inputBuffer = {0};
 
-	if (argc == 2) {
-		printf("File: <%s>", argv[1]);
+	int i = 0;
 
-		if (inputFile = fopen(argv[1], "rb") != NULL) {
-			if( outputFile = fopen(OUTPUT_FILE, "w") != NULL) {
+	inputFileSize = getSmallFileLength(inputFqpn);
 
-				while( !feof(inputFile) ) {
-					inputBuf = fgets(inputFile);
-					fprintf(outputFile, "%c", inputBuf);
+	if (inputFileSize > 0) {
+
+		// Allocate a memory block the size of the input file
+		if ( ( inputBuffer = (unsigned char*) malloc( inputFileSize * sizeof(unsigned char) ) ) != NULL ) {
+			if ( (inputFile = fopen( inputFqpn, "rb" )) != NULL ) {
+				if ( (outputFile = fopen( outputFqpn, "w" )) != NULL ) {
+
+					if ( fread(inputBuffer, 1, inputFileSize, inputFile) == inputFileSize ) {
+					
+						for (i = 0; i < inputFileSize; i++) {
+							if ( (i + 1) % 10 == 0 ) {
+								// This is a 0th digit
+								fprintf(outputFile, "%03d\n", inputBuffer[i]);
+							}
+							else {
+								fprintf(outputFile, "%03d ", inputBuffer[i]);
+							}
+						}
+
+
+					}
+					else {
+						printf("ERROR: Something bad happened. An error occured while reading the input file\n");
+						result = 4;
+					}
+
+					fclose(inputFile);
+					fclose(outputFile);
+
 				}
-
-				fclose(inputFile);
-				fclose(outputFile);
-
+				else {
+					printf("ERROR: Could not open output file for writing\n");
+					result = 3;
+				}
 			}
 			else {
-				printf(
-					"Output file could not be opened"
-					" for reading\n"
-				);
+				printf("ERROR: Could not open input file for reading\n");
+				result = 3;
 			}
+
+			// Always remember to free your memory after a malloc()
+			free(inputBuffer);
 		}
 		else {
-			printf(
-				"Input file could not be opened"
-				" for reading\n"
-			);
+			printf("ERROR: Could not allocate enough memory to read the input file\n");
+			result = 2;
 		}
 	}
-
 	else {
-		printf(
-			"Invalid syntax.\n"
-			"cA5.exe <filein>\n"
-		);
+		// Either the file is too small to be read or there was an error reading the file
+		result = 1;
 	}
 
 
 	return 0;
+}
+
+int main (int argc, char *argv[]) {
+
+	return copyBinaryFileToAsciiFile(argv[1], OUTPUT_FILE);
+	
+
+	// Get file length using stupid windows bindings
+	// ...
+
+	
+	// Read and compute the file into an output buffer
+
+	//// Allocate an input buffer room to read the entire file
+	//if ( ( inputBuffer = (unsigned char*) malloc( inputFileSize * sizeof(unsigned char) ) ) != NULL && 
+ //			( outputBuffer = (char*) malloc( inputFileSize * sizeof(char) ) ) != NULL ) {
+	//	
+	//	// Read the input file into the inputBuffer
+	//	if ( readBinaryFileToBuffer(inputBuffer, "input.pdf", inputFileSize) ) {
+
+	//		for (i = 0; i < inputFileSize; i++) {
+	//			outputFileSize += strlen(tempBuffer);
+	//			outputBuffer = (char*) realloc(outputBuffer, outputFileSize * sizeof(char));
+	//			
+	//			if ( (i + 1) % 10 == 0 ) {
+	//				// This is a 0th digit
+	//				sprintf(tempBuffer, "%03u\n", inputBuffer[i]);
+	//				strcat(outputBuffer, tempBuffer);
+	//			}
+	//			else {
+	//				sprintf(tempBuffer, "%03u ", inputBuffer[i]);
+	//				strcat(outputBuffer, tempBuffer);
+	//			}
+	//		}
+
+	//		// Write the output buffer to a file
+	//		writeBufferToFile(outputBuffer, OUTPUT_FILE);
+
+	//	}
+	//}
+
+	//free(inputBuffer);
+	//free(outputBuffer);
+
+
+	
+	// Read the file in segments
+
+	/*
+	int fileSize = 0;
+	int fileSegments = 0; // File size split by buffer size
+	unsigned char fileBuffer[BUF_SIZE + 1]; // Don't forget that null bit at the end
+
+	int x = 0;
+	int y = 0;
+
+	if ( (inputFile = fopen( "input.jpg", "rb" )) != NULL ) {
+		if ( (outputFile = fopen( "output.txt", "w" )) != NULL ) {
+
+			// Get the length of the input file
+			fseek(inputFile, 0L, SEEK_END);
+			fileSize = ftell(inputFile);
+			fseek(inputFile, 0L, SEEK_SET);
+
+			if (fileSize < BUF_SIZE) {
+				// Read the file in one go
+				if (fread(fileBuffer, 1, BUF_SIZE, inputFile) == BUF_SIZE) {
+					// Read was successful
+				}
+				else {
+					// Read could not read!
+				}
+				
+				for (x = 0; x < fileSize; x++) {
+					fprintf(outputFile, "%c", fileBuffer[x]);
+				}
+
+			}
+			else {
+				// Calculate file segments
+				fileSegments = fileSize / BUF_SIZE;
+
+				for (x = 0; x < fileSegments; x++) {
+					fread(fileBuffer, 1, BUF_SIZE, inputFile);
+
+					// Write buffer to output
+					for (y = 0; y < BUF_SIZE; y++) {
+						fprintf(outputFile, "%c", fileBuffer[y]);
+					}
+					
+				}
+
+				fread(fileBuffer, 1, fileSize % BUF_SIZE, inputFile);
+
+				for (x = 0; x < fileSize % BUF_SIZE; x++) {
+					fprintf(outputFile, "%c", fileBuffer[x]);
+				}
+
+			}
+
+			fclose(inputFile);
+			fclose(outputFile);
+
+		}
+		else {
+			printf("ERROR: Could not open output file for writing\n");
+		}
+	}
+	else {
+		printf("ERROR: Could not open input file for reading\n");
+	}
+	*/
+
 }
