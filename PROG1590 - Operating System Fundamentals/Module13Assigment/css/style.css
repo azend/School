@@ -12,6 +12,11 @@ body {
 header, footer {
 	display: block;
 	background-color: black;
+	color: yellow;
+}
+
+header h1, header a, footer p {
+	color: yellow;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -21,11 +26,6 @@ h1, h2, h3, h4, h5, h6, p {
 
 img {
 	/*margin: 10px 10px 20px 10px;*/
-}
-
-header *, footer * {
-	background-color: black;
-	color: yellow;
 }
 
 header {

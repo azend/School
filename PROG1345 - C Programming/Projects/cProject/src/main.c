@@ -1,7 +1,7 @@
+#include <string.h>
 #include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "unit.h"
 
@@ -14,11 +14,17 @@
 #define COLUMN_DEFAULT_WIDTH	80
 
 void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpace, int* columnWidth) ;
-int readFile (char* fileName, char** file);
+int readFile (char* fileName, char* file);
 char* wrapString (char* input, int wrapAtLastSpace, int columnWidth);
 int getFileLength(char* fileName);
 
+void strblank( char* input, int length ) {
+	int i = 0;
 
+	for (i = 0; i < length; i++) {
+		input[i] = '\0';
+	}
+}
 
 int getFileLength(char* fileName) {
 	// Put icky os dependant stuff here
@@ -40,7 +46,7 @@ int getFileLength(char* fileName) {
 	return result;
 }
 
-int readFile (char* fileName, char** file) {
+int readFile (char* fileName, char* file) {
 	int result = 0;
 	int fileLength = 0;
 
@@ -50,16 +56,16 @@ int readFile (char* fileName, char** file) {
 
 	if ( (fileLength = getFileLength(fileName)) != -1 ) {
 		
-		*file = (char*) calloc(fileLength + 1, sizeof (char));
+		file = (char*) calloc(fileLength + 1, sizeof (char));
 
-		if ( *file != NULL ) {
+		if ( file != NULL ) {
 		
 			fp = fopen(fileName, "r");
 
 			if (fp != NULL) {
 	
 				while( fgets(lineBuffer, LINE_MAX_LENGTH, fp) != NULL ) {
-					strcat(*file, lineBuffer);
+					strcat(file, lineBuffer);
 				}	
 					
 				fclose(fp);
@@ -86,7 +92,80 @@ int readFile (char* fileName, char** file) {
 	return result;
 }
 
+//char* getStringBetweenPointers( char* from, char* to ) {
+//	int substringLength = to - from;
+//	char substring [substringLength + 1];
+//	int i = 0;
+//
+//	for (i = 0; i < substringLength; i++) {
+//		substring[i] = from[i];
+//	}
+//
+//	return substring;
+//}
+
 char* wrapString (char* input, int wrapAtLastSpace, int columnWidth) {
+	char* wrapPointFinder;
+	char buffer[1024] = "";
+	int i = 0;
+
+	while ( strlen(input) > columnWidth ) {
+		strblank(buffer, 1024);
+		wrapPointFinder = input + columnWidth;
+
+		if (wrapAtLastSpace == TRUE) {
+
+			if (*wrapPointFinder == ' ') {
+				/*strncpy(buffer, input, wrapPointFinder - input);
+				printf("%s\n", buffer);*/
+
+				for (i = 0; i < (wrapPointFinder - input); i++) {
+					printf("%c", input[i]);
+				}
+				printf("\n");
+
+				input = wrapPointFinder;
+
+				if (*input == ' ') {
+					input++;
+				}
+			}
+			else {
+				while ( *wrapPointFinder != ' ' && wrapPointFinder > input) {
+					wrapPointFinder--;
+					if ( *wrapPointFinder == ' ' ) {
+						// Wrap point found
+
+						/*strncpy(buffer, input, wrapPointFinder - input);
+						printf("%s\n", buffer);*/
+
+						for (i = 0; i < (wrapPointFinder - input); i++) {
+							printf("%c", input[i]);
+						}
+						printf("\n");
+
+						input = wrapPointFinder;
+
+						if (*input == ' ') {
+							input++;
+						}
+						 
+					}
+				}
+			}
+
+		}
+		else {
+			strncpy(buffer, input, wrapPointFinder - input);
+			printf("%s\n", buffer);
+
+			input = wrapPointFinder;
+		}
+	}
+
+	printf("%s", input);
+	/*
+
 	int inputIndex = 0;
 	char* output;
 	int outputIndex = 0;
@@ -138,6 +217,8 @@ char* wrapString (char* input, int wrapAtLastSpace, int columnWidth) {
 	}
 
 	return output;
+
+	*/
 }
 
 int countArguments(int argc, char* argv[]) {
@@ -184,8 +265,8 @@ void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpac
 
 						// cheater way
 						// I could also make a substring
-						argv[i][0] = 0;
-						argv[i][1] = 0;
+						argv[i][0] = '0';
+						argv[i][1] = '0';
 
 						*columnWidth = atoi(argv[i]);
 						if ( *columnWidth == 0 ) {
@@ -215,7 +296,7 @@ void processArguments (int argc, char *argv[], char** files, int* wrapAtLastSpac
 
 				char* file;
 
-				readFile(argv[i], &file);
+				readFile(argv[i], file);
 
 				printf("%s", wrapString(file, *wrapAtLastSpace, *columnWidth));
 
@@ -238,13 +319,17 @@ int main (int argc, char *argv[]) {
 	// Code goes here.
 	// ...
 
+	char* inputString = "Pudding donut marzipan gummi bears. I love cookie marshmallow jelly jujubes liquorice. Oat cake applicake apple pie donut. Sugar plum jelly sugar plum applicake powder wafer. I love cookie bonbon dessert. I love dragée soufflé jujubes apple pie bear claw chupa chups chupa chups. Wypas I love cookie. Chocolate cake I love gummies croissant pastry tootsie roll chocolate pastry. Carrot cake soufflé halvah tootsie roll powder. Toffee sesame snaps I love oat cake. Chocolate bar biscuit faworki topping toffee I love. Tootsie roll I love lemon drops sweet cake."
+						"Chocolate bar marshmallow apple pie marzipan pudding cookie wafer pastry. Cotton candy candy canes gummi bears. Applicake gingerbread cotton candy pie toffee macaroon halvah. Cake pudding ice cream carrot cake chupa chups marshmallow tootsie roll sesame snaps pastry. Pudding I love cookie. I love topping apple pie jelly beans. Cookie bear claw apple pie jelly-o. Donut soufflé chocolate cake. Dessert I love sweet chocolate cake croissant pie soufflé carrot cake. Tart sesame snaps lollipop bonbon dessert liquorice jujubes chocolate bar danish. Cookie tootsie roll dessert powder I love apple pie bear claw sesame snaps. Croissant macaroon jelly tiramisu caramels gummies biscuit. Chocolate bar donut topping macaroon chocolate cake cotton candy faworki. I love chupa chups topping danish.";
+	wrapString(inputString, TRUE, 30);
 
-
-	char** files;
+	/*char* files[1];
 	int wrapAtLastSpace = FALSE;
 	int columnWidth = COLUMN_DEFAULT_WIDTH;
 
-	processArguments(argc, argv, files, &wrapAtLastSpace, &columnWidth);
+	files[0] = "test.txt";
+
+	processArguments(argc, argv, files, &wrapAtLastSpace, &columnWidth);*/
 
 	/*char* file;
 

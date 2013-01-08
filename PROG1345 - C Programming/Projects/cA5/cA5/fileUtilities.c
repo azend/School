@@ -1,3 +1,13 @@
+/*
+* FILE : cA5.c
+* PROJECT : PROG1345 - Assignment #5
+* PROGRAMMER : Verdi R-D
+* FIRST VERSION : 2012-12-03
+* DESCRIPTION :
+* The functions in this file are used to get the
+* length/size of a file.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <Windows.h> // :(
@@ -5,6 +15,22 @@
 #include "fileUtilities_proto.h"
 
 
+//
+// FUNCTION : copyBinaryFileToAsciiFile
+// DESCRIPTION :
+// This function copies a binary file to
+// an ascii file.
+// PARAMETERS :
+// char* inputFqpn : fully qualified input file name
+// char* outputFqpn : fully qualified output file name
+// RETURNS :
+// int : 0 if the command ran successfully
+//       1 if the input file was less than 1 byte
+//       2 if the os could not allocate enough memory to
+//         read the input file
+//       3 if the input or output file could not be opened
+//       4 if an error occured while reading the file
+//
 // This function only works on files up to 2,147,483,647 bytes in size
 int getSmallFileLength ( char* fqpn ) {
 	int fileSize = -1;
@@ -25,46 +51,4 @@ int getSmallFileLength ( char* fqpn ) {
 
 	return fileSize;
 
-}
-
-int readBinaryFileToBuffer (unsigned char* buffer, char* fqpn, int fileSize) {
-	int result = 0;
-	FILE * fp;
-
-	if ( (fp = fopen( fqpn, "rb" )) != NULL ) {
-
-		if ( fread(buffer, 1, fileSize, fp) == fileSize ) {
-			result = 1;
-		}
-		else {
-			printf("ERROR: Could not read file\n");
-		}
-
-		fclose(fp);
-
-	}
-	else {
-		printf("ERROR: Could not open file for reading\n");
-	}
-
-
-	return result;
-}
-
-int writeBufferToFile (char* buffer, char* fqpn) {
-	int result = 0;
-	FILE * fp;
-
-	if ( (fp = fopen( fqpn, "r" )) != NULL ) {
-
-		fprintf(fp, "%s", buffer);
-
-		fclose(fp);
-
-	}
-	else {
-		printf("ERROR: Could not open file for reading\n");
-	}
-
-	return result;
 }
