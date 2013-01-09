@@ -1,20 +1,7 @@
 
-body {
-	/*background-color: yellow;*/
-	background-image: url("http://i91.photobucket.com/albums/k314/SakiChan1/gifs%20i%20didnt%20make/539919226m4ip.gif");
-	background-repeat: repeat;
-}
+/*Global rules, fonts, and colors*/
 
-.wrapper {
-	background-color:yellow;
-}
-
-header, footer {
-	display: block;
-	background-color: black;
-}
-
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, li {
 	color: black;
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -23,18 +10,15 @@ img {
 	/*margin: 10px 10px 20px 10px;*/
 }
 
-header *, footer * {
-	background-color: black;
-	color: yellow;
+/*Backgrounds*/
+
+body {
+	/*background-color: yellow;*/
+	background-image: url("http://i91.photobucket.com/albums/k314/SakiChan1/gifs%20i%20didnt%20make/539919226m4ip.gif");
+	background-repeat: repeat;
 }
 
-header {
-	padding: 10px 20px;
-}
-
-footer {
-	text-align: center;
-}
+/*Wrappers*/
 
 .wrapper {
 	width: 960px;
@@ -43,6 +27,29 @@ footer {
 
 .content {
 	padding: 20px 20px;
+}
+
+
+/*Header and footer*/
+
+.wrapper {
+	background-color:yellow;
+}
+
+header, footer {
+	background-color: black;
+	color:yellow;
+
+	padding: 10px 20px;
+}
+
+header *, footer * {
+	background-color: black;
+	color: yellow;
+}
+
+footer {
+	text-align: center;
 }
 
 .navigation {
@@ -57,6 +64,8 @@ footer {
 .navigation a {
 	margin: 2px 5px;
 }
+
+/*Gallery*/ 
 
 .galleryitem {
 	width: 400px;
@@ -81,6 +90,15 @@ footer {
 	text-align: center;
 }
 
+/*Badges*/
+
+.badge {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/*Utilities*/
+
 .floatleft {
 	float: left;
 }
@@ -88,3 +106,19 @@ footer {
 .floatright {
 	float: right;
 }
+
+.clearfix {
+	clear: both;
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,14 @@
+/*
+* FILE : cA5.c
+* PROJECT : PROG1345 - Assignment #5
+* PROGRAMMER : Verdi R-D
+* FIRST VERSION : 2012-12-03
+* DESCRIPTION :
+* This program takes an input binary file and outputs it
+* as human readable bytes in an ascii text file.
+*/
+
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,10 +17,26 @@
 #include "fileUtilities_proto.h"
 #include "cA5_proto.h"
 
-#define BUF_SIZE	1024
-#define HALF_BYTE	128
-
 #define OUTPUT_FILE	"contents.txt"
+
+
+
+//
+// FUNCTION : copyBinaryFileToAsciiFile
+// DESCRIPTION :
+// This function copies a binary file to
+// an ascii file.
+// PARAMETERS :
+// char* inputFqpn : fully qualified input file name
+// char* outputFqpn : fully qualified output file name
+// RETURNS :
+// int : 0 if the command ran successfully
+//       1 if the input file was less than 1 byte
+//       2 if the os could not allocate enough memory to
+//         read the input file
+//       3 if the input or output file could not be opened
+//       4 if an error occured while reading the file
+//
 
 int copyBinaryFileToAsciiFile(char* inputFqpn, char* outputFqpn) {
 	int result = 0;
@@ -23,17 +50,23 @@ int copyBinaryFileToAsciiFile(char* inputFqpn, char* outputFqpn) {
 
 	int i = 0;
 
+
+	// Get the input file size
 	inputFileSize = getSmallFileLength(inputFqpn);
 
 	if (inputFileSize > 0) {
 
 		// Allocate a memory block the size of the input file
-		if ( ( inputBuffer = (unsigned char*) malloc( inputFileSize * sizeof(unsigned char) ) ) != NULL ) {
+		if ( ( inputBuffer = (unsigned char*) malloc( (inputFileSize + 1) * sizeof(unsigned char) ) ) != NULL ) {
+
+			// Open the input and output files for use
 			if ( (inputFile = fopen( inputFqpn, "rb" )) != NULL ) {
 				if ( (outputFile = fopen( outputFqpn, "w" )) != NULL ) {
 
-					if ( fread(inputBuffer, 1, inputFileSize, inputFile) == inputFileSize ) {
+					// Read the input file's byte stream
+					if ( fread(inputBuffer, 1, inputFileSize, inputFile) == (unsigned int) inputFileSize ) {
 					
+						// Print it out one at a time into the output file
 						for (i = 0; i < inputFileSize; i++) {
 							if ( (i + 1) % 10 == 0 ) {
 								// This is a 0th digit
@@ -44,6 +77,7 @@ int copyBinaryFileToAsciiFile(char* inputFqpn, char* outputFqpn) {
 							}
 						}
 
+						fprintf(outputFile, "\n");
 
 					}
 					else {
@@ -51,6 +85,7 @@ int copyBinaryFileToAsciiFile(char* inputFqpn, char* outputFqpn) {
 						result = 4;
 					}
 
+					// Don't forget to close your files
 					fclose(inputFile);
 					fclose(outputFile);
 
@@ -84,7 +119,12 @@ int copyBinaryFileToAsciiFile(char* inputFqpn, char* outputFqpn) {
 
 int main (int argc, char *argv[]) {
 
-	return copyBinaryFileToAsciiFile(argv[1], OUTPUT_FILE);
+	if (argc == 2) { 
+		copyBinaryFileToAsciiFile(argv[1], OUTPUT_FILE);
+	}
+	else {
+		printf("cA5.exe <inputfile>");
+	}
 	
 
 	// Get file length using stupid windows bindings
