@@ -18,6 +18,7 @@ $(OBJDIR)/sadA2.o : $(SRCDIR)/sadA2.c $(SRCDIR)/sadA2.h
 clean:
 	rm -r obj/*.o
 	rm -r bin/*
+	rm sadA2.tar.gz
 
 tar:
 	tar -cvzf sadA2.tar.gz .
